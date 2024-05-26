@@ -1,4 +1,69 @@
-<!DOCTYPE html>
-<script>
-    window.location.href = "wip.html"
-</script>
+<!doctype html>
+<html>
+	<head>
+		<link rel="stylesheet" href="./style.css">
+		<style>
+			@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
+			/* body { overflow: hidden; } */
+			.hide { color: color-mix(in oklab, var(--medium-color), var(--text-color)); }
+			#time { font-family: "Roboto Mono", monospace; }
+		</style>
+		<script>
+			const CIRCLE_SIZE = 100;
+			addEventListener("DOMContentLoaded", () => {
+				updateMouse(0, 0);
+				updateTime();
+			});
+
+			function updateTime() {
+				{ // time
+					const millis = Date.now() - new Date("10/21/2023 10:47 AM"), // i think thats the right date?
+						  seconds = Math.floor(millis/1000),
+						  minutes = Math.floor(seconds/60),
+						  hours = Math.floor(minutes/60);
+	
+					document.querySelector("#time").innerHTML = `${hours}\
+:${(minutes % 60).toString(10).padStart(2, "0")}\
+:${(seconds % 60).toString(10).padStart(2, "0")}\
+.${(millis % 1000).toString(10).slice(0).padStart(3, "0")}`;
+				}
+
+				requestAnimationFrame(updateTime); // run every frame
+			}
+
+			// fancy effect just for that one question mark XD
+			// anyway im really close to finishing it so i just need to finish up some stuff
+			// note: after i will be ““finished”” i will still keep working on the site, im thinking something similar to https://neal.fun
+			// edit: i guess it "is" "finished" but its still "secret" and "wip" and "also" why am "I" putting so many "quotes"
+			function updateMouse(x, y) {
+				for (const el of document.querySelectorAll(".hide")) {
+					const rect = el.getBoundingClientRect();
+					const rel = { x: x - rect.x, y: y - rect.y} // relative coords (client - rect)
+					el.style.setProperty("clip-path", `circle(${CIRCLE_SIZE}px at ${rel.x}px ${rel.y}px)`);
+				}
+			}
+			{
+				addEventListener("mousemove", (ev) => {
+					updateMouse(ev.clientX, ev.clientY);
+				});
+				addEventListener("touchmove", (ev) => {
+					const t = ev.touches[0];
+					updateMouse(t.clientX, t.clientY);
+				});
+			}
+		</script>
+	</head>
+	<body>
+		<h1>
+			My website is not ready yet! <span class="hide">D:</span>
+		</h1>
+		<p>I'm working on it though! <small>(pls be patient)</small> <span class="hide">.-.</span></p>
+		<br><br>
+		<div>
+			<p>Time elapsed since start of development:</p>
+			<p id="time"></p>
+			<p class="hide">:O</p>
+			<h1 class="hide">:\</h1>
+		</div>
+	</body>
+</html>
